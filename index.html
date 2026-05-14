@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Clarity Automation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<!-- Calendly widget script -->
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --cream:#FAFAF7;
+  --ink:#1A1A18;
+  --ink-muted:#5A5A54;
+  --ink-light:#9A9A92;
+  --accent:#1D6B4E;
+  --accent-light:#E6F4EE;
+  --accent-mid:#0F6E56;
+  --border:#E4E4DC;
+  --card:#FFFFFF;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;font-size:16px;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(250,250,247,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 5%;}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{font-family:'DM Serif Display',serif;font-size:20px;letter-spacing:-0.3px;}
+.logo span{color:var(--accent);}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{font-size:14px;color:var(--ink-muted);font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--ink);}
+.btn-nav{background:var(--ink);color:#fff !important;padding:9px 20px;border-radius:6px;font-size:14px;font-weight:500;transition:background 0.2s;}
+.btn-nav:hover{background:var(--accent) !important;}
+
+/* HERO */
+.hero{max-width:1100px;margin:0 auto;padding:96px 5% 80px;}
+.hero-eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:6px 14px;border-radius:4px;margin-bottom:28px;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(42px,6vw,72px);line-height:1.08;letter-spacing:-1.5px;max-width:700px;margin-bottom:28px;}
+.hero h1 em{font-style:italic;color:var(--accent);}
+.hero-sub{font-size:18px;color:var(--ink-muted);max-width:520px;line-height:1.7;margin-bottom:40px;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:56px;}
+.btn-primary{background:var(--ink);color:#fff;padding:14px 28px;border-radius:6px;font-weight:500;font-size:15px;transition:background 0.2s;}
+.btn-primary:hover{background:var(--accent);}
+.btn-ghost{color:var(--ink);padding:14px 24px;font-weight:500;font-size:15px;border-bottom:1.5px solid var(--ink);transition:border-color 0.2s;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.hero-pills{display:flex;flex-wrap:wrap;gap:20px;}
+.pill{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-muted);}
+.pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+
+/* DIVIDER */
+.section-divider{border:none;border-top:1px solid var(--border);max-width:1100px;margin:0 auto;}
+
+/* SECTION HEADERS */
+.section-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-light);margin-bottom:16px;}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(30px,4vw,48px);letter-spacing:-0.8px;line-height:1.15;}
+.section-sub{font-size:17px;color:var(--ink-muted);max-width:520px;margin-top:14px;line-height:1.7;}
+
+/* SERVICES */
+.services{max-width:1100px;margin:0 auto;padding:80px 5%;}
+.services-header{margin-bottom:56px;}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2px;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.service-card{background:var(--card);padding:36px 32px;transition:background 0.2s;}
+.service-card:hover{background:#F5F5F0;}
+.service-icon{width:40px;height:40px;background:var(--accent-light);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.service-icon svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.8;}
+.service-card h3{font-size:16px;font-weight:600;margin-bottom:10px;}
+.service-card p{font-size:14px;color:var(--ink-muted);line-height:1.65;}
+
+/* HOW IT WORKS */
+.how{background:#F2F2EC;padding:80px 5%;}
+.how-inner{max-width:1100px;margin:0 auto;}
+.how-header{margin-bottom:56px;}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px;}
+.step{position:relative;}
+.step-num{font-family:'DM Serif Display',serif;font-size:52px;color:var(--border);line-height:1;margin-bottom:16px;}
+.step h3{font-size:16px;font-weight:600;margin-bottom:10px;}
+.step p{font-size:14px;color:var(--ink-muted);line-height:1.65;}
+
+/* TESTIMONIALS */
+.testimonials{max-width:1100px;margin:0 auto;padding:80px 5%;}
+.testi-header{margin-bottom:56px;}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.testi-card{background:var(--ink);color:#fff;padding:36px 32px;border-radius:12px;}
+.testi-card blockquote{font-size:15px;line-height:1.7;opacity:0.9;margin-bottom:24px;}
+.testi-author{font-size:13px;opacity:0.55;font-weight:500;}
+.testi-name{font-size:14px;font-weight:500;opacity:1;}
+
+/* PRICING */
+.pricing{background:#F2F2EC;padding:80px 5%;}
+.pricing-inner{max-width:1100px;margin:0 auto;}
+.pricing-header{margin-bottom:16px;}
+.pricing-note{font-size:15px;color:var(--ink-muted);margin-bottom:56px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:36px 32px;}
+.price-card.featured{background:var(--ink);color:#fff;border-color:var(--ink);}
+.price-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;background:var(--accent);color:#fff;padding:5px 12px;border-radius:4px;margin-bottom:20px;}
+.price-label{font-size:13px;font-weight:500;opacity:0.6;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.price-amount{font-family:'DM Serif Display',serif;font-size:48px;letter-spacing:-1px;line-height:1;}
+.price-period{font-size:14px;opacity:0.5;margin-bottom:6px;}
+.price-desc{font-size:14px;opacity:0.6;margin-bottom:28px;line-height:1.6;}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px;}
+.price-features li{font-size:14px;display:flex;align-items:center;gap:10px;opacity:0.85;}
+.price-features li::before{content:'✓';font-weight:600;color:var(--accent);flex-shrink:0;}
+.price-card.featured .price-features li::before{color:#5DCAA5;}
+.btn-price{display:block;text-align:center;padding:13px;border-radius:6px;font-weight:500;font-size:14px;border:1.5px solid var(--border);color:var(--ink);transition:all 0.2s;}
+.btn-price:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+.price-card.featured .btn-price{background:#fff;color:var(--ink);border-color:#fff;}
+.price-card.featured .btn-price:hover{background:var(--accent-light);border-color:var(--accent-light);}
+
+/* CTA SECTION */
+.cta{max-width:1100px;margin:0 auto;padding:80px 5%;}
+.cta-box{background:var(--ink);color:#fff;border-radius:16px;padding:64px 60px;}
+.cta-box-header{text-align:center;margin-bottom:56px;}
+.cta-box-header h2{font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);letter-spacing:-1px;margin-bottom:12px;}
+.cta-box-header p{font-size:17px;opacity:0.65;max-width:460px;margin:0 auto;}
+.cta-columns{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+@media(max-width:760px){
+  .cta-columns{grid-template-columns:1fr;}
+  .cta-box{padding:40px 28px;}
+}
+
+/* CONTACT FORM */
+.cta-form-side h3{
+  font-family:'DM Serif Display',serif;
+  font-size:22px;
+  letter-spacing:-0.3px;
+  margin-bottom:6px;
+}
+.cta-form-side .form-sub{
+  font-size:14px;
+  opacity:0.55;
+  margin-bottom:28px;
+  line-height:1.6;
+}
+.contact-form{display:flex;flex-direction:column;gap:14px;}
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+  padding:13px 16px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.07);
+  color:#fff;
+  font-size:14px;
+  font-family:'DM Sans',sans-serif;
+  outline:none;
+  transition:border-color 0.2s, background 0.2s;
+  resize:none;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder{color:rgba(255,255,255,0.35);}
+.contact-form input:focus,
+.contact-form textarea:focus{
+  border-color:rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.11);
+}
+.contact-form textarea{height:110px;}
+.contact-form button{
+  padding:13px 24px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-weight:500;
+  font-size:14px;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer;
+  transition:background 0.2s;
+  text-align:center;
+}
+.contact-form button:hover{background:#0F6E56;}
+/* Formspree SDK — field-level errors */
+[data-fs-error]{
+  display:block;
+  font-size:12px;
+  color:#f87171;
+  margin-top:-8px;
+  min-height:16px;
+  line-height:1.4;
+}
+/* Formspree SDK — form-level error banner */
+.fs-form-error[data-fs-error]{
+  background:rgba(248,113,113,0.12);
+  border:1px solid rgba(248,113,113,0.25);
+  border-radius:6px;
+  padding:10px 14px;
+  font-size:13px;
+  margin-bottom:4px;
+}
+/* Formspree SDK — success message */
+[data-fs-success]{
+  display:none;
+  text-align:center;
+  padding:32px 20px;
+  background:rgba(255,255,255,0.06);
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.12);
+  font-size:15px;
+  opacity:0.85;
+  line-height:1.6;
+}
+/* SDK sets aria-invalid on bad fields — highlight them */
+.contact-form input[aria-invalid="true"],
+.contact-form textarea[aria-invalid="true"]{
+  border-color:rgba(248,113,113,0.6);
+}
+/* Disabled submit state while sending */
+.contact-form button[disabled]{
+  opacity:0.55;
+  cursor:not-allowed;
+}
+.form-note{font-size:11px;opacity:0.3;margin-top:6px;text-align:center;}
+
+/* CALENDLY SIDE */
+.cta-calendly-side h3{
+  font-family:'DM Serif Display',serif;
+  font-size:22px;
+  letter-spacing:-0.3px;
+  margin-bottom:6px;
+}
+.cta-calendly-side .form-sub{
+  font-size:14px;
+  opacity:0.55;
+  margin-bottom:20px;
+  line-height:1.6;
+}
+.calendly-wrapper{
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.1);
+}
+.calendly-inline-widget{
+  min-width:100%;
+  height:580px;
+}
+
+/* Divider between columns */
+.cta-divider{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.cta-divider-line{flex:1;width:1px;background:rgba(255,255,255,0.1);}
+.cta-divider-text{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;opacity:0.25;}
+
+/* 3-column grid with divider */
+.cta-columns-with-divider{
+  display:grid;
+  grid-template-columns:1fr 40px 1fr;
+  gap:0;
+  align-items:start;
+}
+@media(max-width:760px){
+  .cta-columns-with-divider{grid-template-columns:1fr;}
+  .cta-divider{flex-direction:row;padding:20px 0;}
+  .cta-divider-line{flex:1;height:1px;width:auto;}
+}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:32px 5%;}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-logo{font-family:'DM Serif Display',serif;font-size:17px;}
+.footer-logo span{color:var(--accent);}
+.footer-info{font-size:13px;color:var(--ink-light);}
+.footer-copy{font-size:12px;color:var(--ink-light);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Clarity<span>.</span></div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#cta" class="btn-nav">Free consultation</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">AI consulting for established businesses</div>
+  <h1>Run your business smarter —<br/><em>without the tech headaches.</em></h1>
+  <p class="hero-sub">We help business owners with 10+ years of experience save time, reduce manual work, and stay competitive using simple AI tools built around how you already work.</p>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary">Book a free call</a>
+    <a href="#how" class="btn-ghost">See how it works</a>
+  </div>
+  <div class="hero-pills">
+    <span class="pill">No technical experience needed</span>
+    <span class="pill">Plain-English explanations</span>
+    <span class="pill">Based in Fayetteville, AR</span>
+    <span class="pill">Results in 2–4 weeks</span>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<section class="services" id="services">
+  <div class="services-header">
+    <div class="section-label">What we do</div>
+    <h2 class="section-title">Automation that fits your business,<br/>not the other way around.</h2>
+    <p class="section-sub">We identify the tasks eating your time — then build systems that handle them automatically. No subscriptions to manage. No learning curve. Just results.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <h3>Email & follow-ups</h3>
+      <p>Auto-respond to leads, send appointment reminders, and follow up with customers without lifting a finger.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <h3>Scheduling & booking</h3>
+      <p>Let customers book themselves. Sync calendars, send confirmations, and eliminate back-and-forth.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <h3>Reports & data</h3>
+      <p>Get weekly summaries of your business automatically — sales, reviews, enquiries — delivered to your inbox.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <h3>Customer service AI</h3>
+      <p>An AI assistant that answers common customer questions 24/7, so you can focus on the work that matters.</p>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">Simple from start to finish.</h2>
+      <p class="section-sub">We keep things straightforward. No jargon, no lengthy contracts, no surprises.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Free 30-minute discovery call</h3>
+        <p>We talk about your business, your biggest time drains, and where automation could help most. No pitch, no pressure.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>We map out a simple plan</h3>
+        <p>You receive a clear, plain-English proposal showing exactly what we'll build, what it'll cost, and what you can expect.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>We build it — you watch it work</h3>
+        <p>We set everything up, test it thoroughly, and walk you through how it works. Most projects are live within 2–4 weeks.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Ongoing support, if you want it</h3>
+        <p>We offer optional monthly check-ins to keep things running smoothly and add improvements over time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="testi-header">
+    <div class="section-label">What clients say</div>
+    <h2 class="section-title">Real results for real businesses.</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <blockquote>"I was spending 2 hours a day on emails and follow-ups. Now it's 15 minutes. I didn't have to learn anything technical — they just handled it."</blockquote>
+      <div class="testi-name">Sandra M.</div>
+      <div class="testi-author">Owner, Riverside Bookkeeping</div>
+    </div>
+    <div class="testi-card">
+      <blockquote>"I was skeptical about AI but they explained everything in plain English. It felt less like technology and more like hiring a really efficient assistant."</blockquote>
+      <div class="testi-name">Robert T.</div>
+      <div class="testi-author">Owner, T&J Plumbing Services</div>
+    </div>
+    <div class="testi-card">
+      <blockquote>"My customers now get instant replies even when I'm on a job site. My Google reviews have gone up because people feel taken care of."</blockquote>
+      <div class="testi-name">Carol H.</div>
+      <div class="testi-author">Owner, Hargrove Landscaping</div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-header">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">One-time setup fees with optional ongoing support.</h2>
+    </div>
+    <p class="pricing-note">You own everything we build.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-label">Starter</div>
+        <div class="price-amount">$497</div>
+        <div class="price-period">one-time</div>
+        <div class="price-desc">Perfect for tackling your single biggest time drain.</div>
+        <ul class="price-features">
+          <li>Discovery call</li>
+          <li>1 custom automation</li>
+          <li>Full setup & testing</li>
+          <li>30-day support</li>
+        </ul>
+        <a href="#cta" class="btn-price">Get started</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">Most popular</div>
+        <div class="price-label">Business bundle</div>
+        <div class="price-amount">$1,297</div>
+        <div class="price-period">one-time</div>
+        <div class="price-desc">A full automation stack built around your workflow.</div>
+        <ul class="price-features">
+          <li>Deep-dive audit</li>
+          <li>3 custom automations</li>
+          <li>Full setup & testing</li>
+          <li>60-day support</li>
+          <li>Training walkthrough</li>
+        </ul>
+        <a href="#cta" class="btn-price">Get started</a>
+      </div>
+      <div class="price-card">
+        <div class="price-label">Retainer</div>
+        <div class="price-amount">$297</div>
+        <div class="price-period">/month</div>
+        <div class="price-desc">Ongoing improvements, monitoring, and priority support.</div>
+        <ul class="price-features">
+          <li>Monthly check-in call</li>
+          <li>Updates & tweaks</li>
+          <li>Priority email support</li>
+          <li>New automation credits</li>
+        </ul>
+        <a href="#cta" class="btn-price">Get started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CTA — Contact Form + Calendly
+════════════════════════════════════════════ -->
+<section class="cta" id="cta">
+  <div class="cta-box">
+
+    <div class="cta-box-header">
+      <h2>Ready to get your time back?</h2>
+      <p>Send us a message or book a free 30-minute call directly — whichever works best for you.</p>
+    </div>
+
+    <div class="cta-columns-with-divider">
+
+      <!-- LEFT: Contact form (Formspree) -->
+      <div class="cta-form-side">
+        <h3>Send a message</h3>
+        <p class="form-sub">We'll reply within one business day.</p>
+
+        <!--
+          ╔══════════════════════════════════════════╗
+          ║  SETUP: Replace YOUR_FORM_ID below       ║
+          ║  1. Sign up at formspree.io              ║
+          ║  2. Create a new form                    ║
+          ║  3. Paste your form ID in the action URL ║
+          ╚══════════════════════════════════════════╝
+        -->
+        <!-- Formspree success message (shown by SDK after submit) -->
+        <div data-fs-success>✓&nbsp; Got it — we'll be in touch within one business day.</div>
+
+        <!-- Formspree form-level error banner -->
+        <div class="fs-form-error" data-fs-error></div>
+
+        <form class="contact-form" id="contact-form">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your name"
+            data-fs-field
+            required
+          />
+          <span data-fs-error="name"></span>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Your email address"
+            data-fs-field
+            required
+          />
+          <span data-fs-error="email"></span>
+
+          <input
+            type="text"
+            name="business"
+            placeholder="Your business (optional)"
+          />
+
+          <textarea
+            name="message"
+            placeholder="What are you hoping to automate?"
+            data-fs-field
+            required
+          ></textarea>
+          <span data-fs-error="message"></span>
+
+          <button type="submit" data-fs-submit-btn>Send message →</button>
+          <p class="form-note">No commitment. No tech knowledge required.</p>
+        </form>
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="cta-divider">
+        <div class="cta-divider-line"></div>
+        <div class="cta-divider-text">or</div>
+        <div class="cta-divider-line"></div>
+      </div>
+
+      <!-- RIGHT: Calendly embed -->
+      <div class="cta-calendly-side">
+        <h3>Book a free call</h3>
+        <p class="form-sub">Pick a time that works for you — 30 minutes, no pressure.</p>
+
+        <!--
+          ╔══════════════════════════════════════════╗
+          ║  SETUP: Replace YOUR_USERNAME below      ║
+          ║  1. Sign up at calendly.com              ║
+          ║  2. Create a "30 min" event type         ║
+          ║  3. Replace YOUR_USERNAME with your      ║
+          ║     Calendly username                    ║
+          ╚══════════════════════════════════════════╝
+        -->
+        <div class="calendly-wrapper">
+          <div
+            class="calendly-inline-widget"
+            data-url="https://calendly.com/jacksonschardein/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=1a1a18&text_color=ffffff&primary_color=1D6B4E"
+          ></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Clarity<span>.</span></div>
+    <div class="footer-info">Fayetteville, AR &nbsp;·&nbsp; hello@clarityautomation.com</div>
+    <div class="footer-copy">© 2025 Clarity Automation</div>
+  </div>
+</footer>
+
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'mojrodrz' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+</body>
+</html>
