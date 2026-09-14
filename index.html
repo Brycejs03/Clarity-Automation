@@ -1,581 +1,848 @@
 <!DOCTYPE html>
-<!-- Claude Code integration test -->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Clarity Automation</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<!-- Calendly widget script -->
-<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clarity Automation — The Woodlands, Texas</title>
+<meta name="description" content="Clarity Automation helps established business owners in The Woodlands and Greater Houston hand off repetitive work to simple, dependable automation. Plain English, no tech headaches." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --cream:#FAFAF7;
-  --ink:#1A1A18;
-  --ink-muted:#5A5A54;
-  --ink-light:#9A9A92;
-  --accent:#1D6B4E;
-  --accent-light:#E6F4EE;
-  --accent-mid:#0F6E56;
-  --border:#E4E4DC;
-  --card:#FFFFFF;
-}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;font-size:16px;}
-a{text-decoration:none;color:inherit;}
+  :root{
+    --paper:#FFFFFF;
+    --linen:#F3F0EA;
+    --linen-deep:#E9E4DA;
+    --rule:#D8D2C6;
+    --rule-soft:#E7E2D8;
+    --ink:#1B242C;
+    --ink-2:#3A444D;
+    --ink-soft:#5C6670;
+    --oxblood:#6B2A2A;
+    --oxblood-deep:#4F1D1D;
+    --oxblood-tint:#F5ECEC;
+    --display:'Libre Caslon Display', Georgia, 'Times New Roman', serif;
+    --text:'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
 
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(250,250,247,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 5%;}
-.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;}
-.logo{font-family:'DM Serif Display',serif;font-size:20px;letter-spacing:-0.3px;}
-.logo span{color:var(--accent);}
-.nav-links{display:flex;gap:32px;align-items:center;}
-.nav-links a{font-size:14px;color:var(--ink-muted);font-weight:500;transition:color 0.2s;}
-.nav-links a:hover{color:var(--ink);}
-.btn-nav{background:var(--ink);color:#fff !important;padding:9px 20px;border-radius:6px;font-size:14px;font-weight:500;transition:background 0.2s;}
-.btn-nav:hover{background:var(--accent) !important;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--text);
+    font-size:19px;line-height:1.65;
+    color:var(--ink);background:var(--paper);
+    font-feature-settings:"kern","liga","onum";
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  /* Fine paper grain */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.035;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size:200px 200px;
+  }
+  a{color:var(--oxblood)}
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{
+    outline:3px solid var(--oxblood);outline-offset:3px;border-radius:2px;
+  }
+  ::selection{background:var(--oxblood);color:#fff}
 
-/* HERO */
-.hero{max-width:1100px;margin:0 auto;padding:96px 5% 80px;}
-.hero-eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:6px 14px;border-radius:4px;margin-bottom:28px;}
-.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(42px,6vw,72px);line-height:1.08;letter-spacing:-1.5px;max-width:700px;margin-bottom:28px;}
-.hero h1 em{font-style:italic;color:var(--accent);}
-.hero-sub{font-size:18px;color:var(--ink-muted);max-width:520px;line-height:1.7;margin-bottom:40px;}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:56px;}
-.btn-primary{background:var(--ink);color:#fff;padding:14px 28px;border-radius:6px;font-weight:500;font-size:15px;transition:background 0.2s;}
-.btn-primary:hover{background:var(--accent);}
-.btn-ghost{color:var(--ink);padding:14px 24px;font-weight:500;font-size:15px;border-bottom:1.5px solid var(--ink);transition:border-color 0.2s;}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
-.hero-pills{display:flex;flex-wrap:wrap;gap:20px;}
-.pill{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-muted);}
-.pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;letter-spacing:-.01em;text-wrap:balance}
+  h1{font-size:clamp(2.75rem,5.4vw,4.6rem)}
+  h2{font-size:clamp(2.1rem,3.7vw,3.05rem);max-width:20ch}
+  h3{font-size:1.5rem;line-height:1.25}
+  p{max-width:60ch}
+  em{font-style:italic}
 
-/* DIVIDER */
-.section-divider{border:none;border-top:1px solid var(--border);max-width:1100px;margin:0 auto;}
+  .wrap{width:min(1160px,calc(100% - 56px));margin:0 auto}
+  section{padding:120px 0;position:relative}
+  .lede{color:var(--ink-2);font-size:1.2rem;margin-top:22px;line-height:1.55}
 
-/* SECTION HEADERS */
-.section-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-light);margin-bottom:16px;}
-.section-title{font-family:'DM Serif Display',serif;font-size:clamp(30px,4vw,48px);letter-spacing:-0.8px;line-height:1.15;}
-.section-sub{font-size:17px;color:var(--ink-muted);max-width:520px;margin-top:14px;line-height:1.7;}
+  /* Engraved double rule — the stationery signature */
+  .rule{height:5px;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);background:transparent}
+  .rule-light{border-color:var(--rule)}
 
-/* SERVICES */
-.services{max-width:1100px;margin:0 auto;padding:80px 5%;}
-.services-header{margin-bottom:56px;}
-.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2px;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-.service-card{background:var(--card);padding:36px 32px;transition:background 0.2s;}
-.service-card:hover{background:#F5F5F0;}
-.service-icon{width:40px;height:40px;background:var(--accent-light);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
-.service-icon svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.8;}
-.service-card h3{font-size:16px;font-weight:600;margin-bottom:10px;}
-.service-card p{font-size:14px;color:var(--ink-muted);line-height:1.65;}
+  /* Buttons */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    font-family:var(--text);font-weight:600;font-size:1.02rem;letter-spacing:.005em;
+    text-decoration:none;border:1.5px solid var(--oxblood);
+    padding:15px 28px;border-radius:3px;cursor:pointer;
+    transition:background .18s var(--ease),color .18s var(--ease),transform .18s var(--ease),box-shadow .18s var(--ease);
+  }
+  .btn-solid{background:var(--oxblood);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.08),0 10px 24px -14px rgba(107,42,42,.7)}
+  .btn-solid:hover{background:var(--oxblood-deep);border-color:var(--oxblood-deep);transform:translateY(-1px);box-shadow:0 1px 0 rgba(0,0,0,.08),0 14px 28px -14px rgba(107,42,42,.75)}
+  .btn-line{background:transparent;color:var(--oxblood)}
+  .btn-line:hover{background:var(--oxblood-tint)}
+  .btn-solid:active,.btn-line:active{transform:translateY(0)}
 
-/* HOW IT WORKS */
-.how{background:#F2F2EC;padding:80px 5%;}
-.how-inner{max-width:1100px;margin:0 auto;}
-.how-header{margin-bottom:56px;}
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px;}
-.step{position:relative;}
-.step-num{font-family:'DM Serif Display',serif;font-size:52px;color:var(--border);line-height:1;margin-bottom:16px;}
-.step h3{font-size:16px;font-weight:600;margin-bottom:10px;}
-.step p{font-size:14px;color:var(--ink-muted);line-height:1.65;}
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:40;
+    background:rgba(255,255,255,.86);
+    backdrop-filter:blur(10px) saturate(120%);
+    -webkit-backdrop-filter:blur(10px) saturate(120%);
+    border-bottom:1px solid transparent;
+    transition:border-color .25s,box-shadow .25s;
+  }
+  nav.scrolled{border-bottom-color:var(--rule);box-shadow:0 8px 24px -22px rgba(27,36,44,.5)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:84px}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink)}
+  .brand svg{width:40px;height:40px;flex:none}
+  .brand .name{font-family:var(--display);font-size:1.35rem;line-height:1}
+  .brand .name small{display:block;font-family:var(--text);font-size:.8rem;color:var(--ink-soft);letter-spacing:.02em;margin-top:5px}
+  .nav-links{display:flex;align-items:center;gap:34px}
+  .nav-links a{color:var(--ink);text-decoration:none;font-size:1rem;position:relative}
+  .nav-links a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--oxblood);transform:scaleX(0);transform-origin:left;transition:transform .2s var(--ease)}
+  .nav-links a:not(.btn):hover::after{transform:scaleX(1)}
+  .nav-links .btn{padding:11px 20px;font-size:.98rem;white-space:nowrap}
+  .nav-links .btn .short{display:none}
 
-/* TESTIMONIALS */
-.testimonials{max-width:1100px;margin:0 auto;padding:80px 5%;}
-.testi-header{margin-bottom:56px;}
-.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
-.testi-card{background:var(--ink);color:#fff;padding:36px 32px;border-radius:12px;}
-.testi-card blockquote{font-size:15px;line-height:1.7;opacity:0.9;margin-bottom:24px;}
-.testi-author{font-size:13px;opacity:0.55;font-weight:500;}
-.testi-name{font-size:14px;font-weight:500;opacity:1;}
+  /* ---------- HERO ---------- */
+  .hero{padding:120px 0 120px;overflow:hidden;background:
+    radial-gradient(1200px 600px at 85% 10%, var(--linen) 0%, rgba(243,240,234,0) 60%),
+    var(--paper)}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:80px;align-items:center}
+  .hero-kicker{display:flex;align-items:center;gap:14px;color:var(--ink-soft);font-size:1rem;margin-bottom:28px}
+  .hero-kicker::before{content:"";width:44px;height:1px;background:var(--oxblood)}
+  .hero h1{max-width:15ch}
+  .hero .lede{font-size:1.28rem;max-width:42ch}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px}
+  .hero-facts{margin-top:48px;padding-top:22px;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(3,auto);gap:14px 36px;color:var(--ink-soft);font-size:1rem;width:fit-content}
+  .hero-facts span{display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .hero-facts svg{width:18px;height:18px;flex:none;stroke:var(--oxblood);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
-/* PRICING */
-.pricing{background:#F2F2EC;padding:80px 5%;}
-.pricing-inner{max-width:1100px;margin:0 auto;}
-.pricing-header{margin-bottom:16px;}
-.pricing-note{font-size:15px;color:var(--ink-muted);margin-bottom:56px;}
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
-.price-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:36px 32px;}
-.price-card.featured{background:var(--ink);color:#fff;border-color:var(--ink);}
-.price-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;background:var(--accent);color:#fff;padding:5px 12px;border-radius:4px;margin-bottom:20px;}
-.price-label{font-size:13px;font-weight:500;opacity:0.6;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
-.price-amount{font-family:'DM Serif Display',serif;font-size:48px;letter-spacing:-1px;line-height:1;}
-.price-period{font-size:14px;opacity:0.5;margin-bottom:6px;}
-.price-desc{font-size:14px;opacity:0.6;margin-bottom:28px;line-height:1.6;}
-.price-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px;}
-.price-features li{font-size:14px;display:flex;align-items:center;gap:10px;opacity:0.85;}
-.price-features li::before{content:'✓';font-weight:600;color:var(--accent);flex-shrink:0;}
-.price-card.featured .price-features li::before{color:#5DCAA5;}
-.btn-price{display:block;text-align:center;padding:13px;border-radius:6px;font-weight:500;font-size:14px;border:1.5px solid var(--border);color:var(--ink);transition:all 0.2s;}
-.btn-price:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
-.price-card.featured .btn-price{background:#fff;color:var(--ink);border-color:#fff;}
-.price-card.featured .btn-price:hover{background:var(--accent-light);border-color:var(--accent-light);}
+  /* Page-load: headline settles, ledger prints */
+  .rise{opacity:0;transform:translateY(14px);animation:rise .8s var(--ease) forwards}
+  .rise.d1{animation-delay:.05s}.rise.d2{animation-delay:.18s}.rise.d3{animation-delay:.3s}.rise.d4{animation-delay:.42s}
+  @keyframes rise{to{opacity:1;transform:none}}
 
-/* CTA SECTION */
-.cta{max-width:1100px;margin:0 auto;padding:80px 5%;}
-.cta-box{background:var(--ink);color:#fff;border-radius:16px;padding:64px 60px;}
-.cta-box-header{text-align:center;margin-bottom:56px;}
-.cta-box-header h2{font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);letter-spacing:-1px;margin-bottom:12px;}
-.cta-box-header p{font-size:17px;opacity:0.65;max-width:460px;margin:0 auto;}
-.cta-columns{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
-@media(max-width:760px){
-  .cta-columns{grid-template-columns:1fr;}
-  .cta-box{padding:40px 28px;}
-}
+  /* The overnight ledger — the one memorable object */
+  .ledger-wrap{position:relative;padding:18px 0 0 18px}
+  .ledger-wrap::before{ /* second sheet underneath */
+    content:"";position:absolute;inset:0 18px 18px 0;background:var(--linen-deep);border:1px solid var(--rule);border-radius:4px;
+    transform:rotate(-1.2deg);opacity:.8;
+  }
+  .ledger{
+    position:relative;background:#FBFAF7;border:1px solid var(--rule);border-radius:4px;
+    padding:38px 40px 34px;
+    box-shadow:0 1px 0 rgba(27,36,44,.05),0 2px 6px rgba(27,36,44,.05),0 30px 60px -36px rgba(27,36,44,.45);
+    animation:rise .9s var(--ease) .2s forwards;opacity:0;transform:translateY(14px);
+  }
+  .ledger-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+  .ledger-top h3{font-size:1.5rem;line-height:1.15}
+  .ledger-top .when{color:var(--ink-soft);font-size:.98rem;margin-top:8px}
+  .seal{flex:none;width:74px;height:74px;color:var(--oxblood);transform:rotate(-8deg);opacity:0;animation:stamp .55s var(--ease) 2.15s forwards}
+  @keyframes stamp{0%{opacity:0;transform:rotate(-8deg) scale(1.35)}60%{opacity:1;transform:rotate(-8deg) scale(.96)}100%{opacity:1;transform:rotate(-8deg) scale(1)}}
+  .ledger .rule{margin-top:18px}
+  .ledger ol{list-style:none;margin-top:4px}
+  .ledger li{
+    display:grid;grid-template-columns:82px 1fr;gap:18px;align-items:baseline;
+    padding:15px 0;border-bottom:1px dotted var(--rule);
+    font-size:1.03rem;line-height:1.45;
+    opacity:0;transform:translateY(6px);animation:print .55s var(--ease) forwards;
+  }
+  .ledger li:last-of-type{border-bottom:0}
+  .ledger li:nth-child(1){animation-delay:.6s}.ledger li:nth-child(2){animation-delay:.9s}.ledger li:nth-child(3){animation-delay:1.2s}.ledger li:nth-child(4){animation-delay:1.5s}.ledger li:nth-child(5){animation-delay:1.8s}
+  .ledger time{color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .ledger-total{
+    margin-top:10px;padding-top:16px;border-top:2px solid var(--ink);
+    display:flex;justify-content:space-between;align-items:baseline;gap:20px;
+    opacity:0;animation:print .55s var(--ease) 2.05s forwards;
+  }
+  .ledger-total span{color:var(--ink-soft);font-size:1rem}
+  .ledger-total strong{font-family:var(--display);font-weight:400;font-size:1.65rem;color:var(--oxblood)}
+  @keyframes print{to{opacity:1;transform:none}}
 
-/* CONTACT FORM */
-.cta-form-side h3{
-  font-family:'DM Serif Display',serif;
-  font-size:22px;
-  letter-spacing:-0.3px;
-  margin-bottom:6px;
-}
-.cta-form-side .form-sub{
-  font-size:14px;
-  opacity:0.55;
-  margin-bottom:28px;
-  line-height:1.6;
-}
-.contact-form{display:flex;flex-direction:column;gap:14px;}
-.contact-form input,
-.contact-form textarea{
-  width:100%;
-  padding:13px 16px;
-  border-radius:6px;
-  border:1px solid rgba(255,255,255,0.12);
-  background:rgba(255,255,255,0.07);
-  color:#fff;
-  font-size:14px;
-  font-family:'DM Sans',sans-serif;
-  outline:none;
-  transition:border-color 0.2s, background 0.2s;
-  resize:none;
-}
-.contact-form input::placeholder,
-.contact-form textarea::placeholder{color:rgba(255,255,255,0.35);}
-.contact-form input:focus,
-.contact-form textarea:focus{
-  border-color:rgba(255,255,255,0.3);
-  background:rgba(255,255,255,0.11);
-}
-.contact-form textarea{height:110px;}
-.contact-form button{
-  padding:13px 24px;
-  background:var(--accent);
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  font-weight:500;
-  font-size:14px;
-  font-family:'DM Sans',sans-serif;
-  cursor:pointer;
-  transition:background 0.2s;
-  text-align:center;
-}
-.contact-form button:hover{background:#0F6E56;}
-/* Formspree SDK — field-level errors */
-[data-fs-error]{
-  display:block;
-  font-size:12px;
-  color:#f87171;
-  margin-top:-8px;
-  min-height:16px;
-  line-height:1.4;
-}
-/* Formspree SDK — form-level error banner */
-.fs-form-error[data-fs-error]{
-  background:rgba(248,113,113,0.12);
-  border:1px solid rgba(248,113,113,0.25);
-  border-radius:6px;
-  padding:10px 14px;
-  font-size:13px;
-  margin-bottom:4px;
-}
-/* Formspree SDK — success message */
-[data-fs-success]{
-  display:none;
-  text-align:center;
-  padding:32px 20px;
-  background:rgba(255,255,255,0.06);
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,0.12);
-  font-size:15px;
-  opacity:0.85;
-  line-height:1.6;
-}
-/* SDK sets aria-invalid on bad fields — highlight them */
-.contact-form input[aria-invalid="true"],
-.contact-form textarea[aria-invalid="true"]{
-  border-color:rgba(248,113,113,0.6);
-}
-/* Disabled submit state while sending */
-.contact-form button[disabled]{
-  opacity:0.55;
-  cursor:not-allowed;
-}
-.form-note{font-size:11px;opacity:0.3;margin-top:6px;text-align:center;}
+  @media (prefers-reduced-motion:reduce){
+    .rise,.ledger,.ledger li,.ledger-total,.seal{animation:none !important;opacity:1 !important;transform:none !important}
+    .seal{transform:rotate(-8deg) !important}
+    html{scroll-behavior:auto}
+    .btn,.nav-links a::after{transition:none}
+  }
 
-/* CALENDLY SIDE */
-.cta-calendly-side h3{
-  font-family:'DM Serif Display',serif;
-  font-size:22px;
-  letter-spacing:-0.3px;
-  margin-bottom:6px;
-}
-.cta-calendly-side .form-sub{
-  font-size:14px;
-  opacity:0.55;
-  margin-bottom:20px;
-  line-height:1.6;
-}
-.calendly-wrapper{
-  border-radius:10px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.1);
-}
-.calendly-inline-widget{
-  min-width:100%;
-  height:580px;
-}
+  /* ---------- SERVICES ---------- */
+  .services{background:var(--linen);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .split{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:72px;align-items:start}
+  .sticky{position:sticky;top:120px}
+  .dl > div{
+    display:grid;grid-template-columns:56px minmax(0,.85fr) minmax(0,1.5fr);gap:26px;
+    padding:30px 0;border-bottom:1px solid var(--rule);align-items:start;
+  }
+  .dl > div:first-child{border-top:2px solid var(--ink);padding-top:34px}
+  .dl svg{width:44px;height:44px;stroke:var(--ink);fill:none;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+  .dl h3{font-size:1.35rem}
+  .dl p{color:var(--ink);font-size:1.05rem}
+  .dl small{display:block;margin-top:10px;color:var(--ink-soft);font-size:.98rem;padding-left:14px;border-left:2px solid var(--oxblood)}
+  .dl small b{font-weight:600;color:var(--ink-2)}
 
-/* Divider between columns */
-.cta-divider{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-}
-.cta-divider-line{flex:1;width:1px;background:rgba(255,255,255,0.1);}
-.cta-divider-text{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;opacity:0.25;}
+  /* ---------- HOW ---------- */
+  .timeline{margin-top:64px;position:relative}
+  .timeline::before{content:"";position:absolute;left:0;right:0;top:15px;height:1px;background:var(--rule)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+  .step{position:relative;padding-top:44px}
+  .step::before{
+    content:attr(data-n);position:absolute;top:0;left:0;width:32px;height:32px;border-radius:50%;
+    background:var(--paper);border:1.5px solid var(--ink);color:var(--ink);
+    font-family:var(--display);font-size:1rem;display:grid;place-items:center;
+  }
+  .step h3{font-size:1.3rem}
+  .step p{margin-top:12px;font-size:1.02rem;color:var(--ink-2)}
+  .step .dur{display:inline-block;margin-top:14px;font-size:.95rem;color:var(--ink-soft);border-top:1px solid var(--rule);padding-top:8px}
 
-/* 3-column grid with divider */
-.cta-columns-with-divider{
-  display:grid;
-  grid-template-columns:1fr 40px 1fr;
-  gap:0;
-  align-items:start;
-}
-@media(max-width:760px){
-  .cta-columns-with-divider{grid-template-columns:1fr;}
-  .cta-divider{flex-direction:row;padding:20px 0;}
-  .cta-divider-line{flex:1;height:1px;width:auto;}
-}
+  /* ---------- EXAMPLES ---------- */
+  .examples{background:var(--ink);color:#fff}
+  .examples::before{ /* faint engraving lines */
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;
+    background-image:repeating-linear-gradient(135deg, #fff 0 1px, transparent 1px 12px);
+  }
+  .examples h2{color:#fff}
+  .examples .lede{color:rgba(255,255,255,.74)}
+  .ex-list{margin-top:64px;border-top:1px solid rgba(255,255,255,.22);position:relative}
+  .ex{
+    display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1fr) minmax(0,1fr);gap:44px;
+    padding:44px 0;border-bottom:1px solid rgba(255,255,255,.18);
+  }
+  .ex h3{color:#fff;font-size:1.5rem}
+  .ex-col{padding-left:22px;border-left:1px solid rgba(255,255,255,.22)}
+  .ex-col > span{display:block;font-size:.95rem;color:rgba(255,255,255,.62);margin-bottom:10px;font-style:italic}
+  .ex-col p{color:rgba(255,255,255,.8);font-size:1.06rem}
+  .ex-col.after{border-left-color:#C98F8F}
+  .ex-col.after > span{color:#E7C9C9}
+  .ex-col.after p{color:#fff}
 
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:32px 5%;}
-.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
-.footer-logo{font-family:'DM Serif Display',serif;font-size:17px;}
-.footer-logo span{color:var(--accent);}
-.footer-info{font-size:13px;color:var(--ink-light);}
-.footer-copy{font-size:12px;color:var(--ink-light);}
+  /* ---------- PRICING ---------- */
+  .price-table{display:grid;grid-template-columns:repeat(3,1fr);margin-top:64px;border:1px solid var(--rule);border-radius:4px;overflow:visible;background:var(--paper)}
+  .tier{padding:40px 36px 36px;border-right:1px solid var(--rule);display:flex;flex-direction:column;position:relative}
+  .tier:last-child{border-right:0}
+  .tier.lead{
+    background:var(--linen);margin:-14px -1px;padding-top:54px;padding-bottom:50px;
+    border:1px solid var(--rule);border-top:2px solid var(--ink);border-radius:4px;z-index:1;
+    box-shadow:0 30px 60px -40px rgba(27,36,44,.45);
+  }
+  .tier.lead .tag{position:absolute;top:-1px;left:36px;transform:translateY(-50%);background:var(--oxblood);color:#fff;font-size:.9rem;font-weight:600;padding:6px 12px;border-radius:2px}
+  .tier-name{font-family:var(--display);font-size:1.65rem}
+  .tier-price{margin-top:18px;display:flex;align-items:baseline;gap:10px}
+  .tier-price strong{font-family:var(--display);font-weight:400;font-size:2.9rem;line-height:1;font-variant-numeric:lining-nums}
+  .tier-price span{color:var(--ink-soft)}
+  .tier-desc{margin-top:14px;color:var(--ink-2);font-size:1.03rem;min-height:3.2em}
+  .tier ul{list-style:none;margin-top:24px;padding-top:24px;border-top:1px solid var(--rule);flex:1}
+  .tier li{padding:8px 0 8px 28px;position:relative;font-size:1.03rem}
+  .tier li::before{content:"";position:absolute;left:3px;top:.92em;width:12px;height:7px;border-left:1.5px solid var(--oxblood);border-bottom:1.5px solid var(--oxblood);transform:rotate(-45deg)}
+  .tier .btn{margin-top:30px}
+  .pricing-note{margin-top:26px;color:var(--ink-soft);font-size:1.03rem}
+
+  /* ---------- FAQ ---------- */
+  .faq{background:var(--linen);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .faq-list{margin-top:56px;border-top:2px solid var(--ink)}
+  details{border-bottom:1px solid var(--rule)}
+  summary{
+    list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:24px;
+    padding:24px 0;font-family:var(--display);font-size:1.4rem;line-height:1.25;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary .plus{flex:none;width:28px;height:28px;position:relative;color:var(--oxblood)}
+  summary .plus::before,summary .plus::after{content:"";position:absolute;background:currentColor;left:50%;top:50%;transform:translate(-50%,-50%);transition:transform .25s var(--ease)}
+  summary .plus::before{width:16px;height:1.5px}
+  summary .plus::after{width:1.5px;height:16px}
+  details[open] summary .plus::after{transform:translate(-50%,-50%) rotate(90deg)}
+  details .answer{padding:0 56px 28px 0;color:var(--ink-2);font-size:1.08rem}
+  details .answer p + p{margin-top:12px}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:80px;align-items:center}
+  .about h2{margin-bottom:26px}
+  .about p{font-size:1.2rem;max-width:58ch}
+  .about p + p{margin-top:18px}
+  .about .sig{margin-top:30px;font-family:var(--display);font-size:1.45rem}
+  .about .sig small{display:block;font-family:var(--text);font-size:1rem;color:var(--ink-soft);margin-top:4px}
+  .plate{
+    aspect-ratio:1;border:1px solid var(--rule);border-radius:4px;background:var(--linen);
+    display:grid;place-items:center;position:relative;
+    box-shadow:inset 0 0 0 10px var(--paper), inset 0 0 0 11px var(--rule);
+  }
+  .plate svg{width:56%;height:56%;color:var(--ink)}
+  .plate figcaption{position:absolute;bottom:26px;left:0;right:0;text-align:center;color:var(--ink-soft);font-size:.95rem}
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:72px;margin-top:64px;align-items:start}
+  .contact h3{font-size:1.5rem}
+  .contact .sub{color:var(--ink-2);margin-top:8px;font-size:1.03rem}
+  form{margin-top:26px;display:grid;gap:16px}
+  label{font-weight:600;font-size:1rem;display:block;margin-bottom:8px}
+  label span{color:var(--ink-soft);font-weight:400}
+  input,textarea{
+    width:100%;font-family:var(--text);font-size:1.05rem;color:var(--ink);
+    padding:15px 16px;border:1px solid #B9B2A6;border-radius:3px;background:#fff;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  input:hover,textarea:hover{border-color:#8F877A}
+  input:focus,textarea:focus{border-color:var(--oxblood);box-shadow:0 0 0 3px var(--oxblood-tint);outline:none}
+  textarea{min-height:150px;resize:vertical}
+  form button{width:100%;margin-top:6px}
+  .form-note{margin-top:8px;color:var(--ink-soft);font-size:.98rem}
+  .msg{display:none;padding:16px 18px;border-radius:3px;margin-top:20px;font-size:1.05rem}
+  .msg.show{display:block}
+  .msg-ok{background:var(--linen);border:1px solid var(--rule)}
+  .msg-err{color:var(--oxblood);border:1px solid var(--oxblood)}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  form button[disabled]{opacity:.55;cursor:not-allowed}
+
+  /* Booking widget */
+  .booker{border:1px solid var(--rule);border-radius:4px;margin-top:26px;background:#fff;padding:28px;box-shadow:0 30px 60px -44px rgba(27,36,44,.4)}
+  .booker-row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end}
+  .booker .tz{color:var(--ink-soft);font-size:.95rem;padding-bottom:14px}
+  .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  .slot{font-family:var(--text);font-size:1rem;padding:12px 6px;border:1px solid var(--rule);border-radius:3px;background:#fff;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s}
+  .slot:hover{border-color:var(--ink)}
+  .slot.on{background:var(--oxblood);border-color:var(--oxblood);color:#fff}
+  .slots-note{margin-top:20px;color:var(--ink-soft);font-size:1rem}
+  .booker form{margin-top:24px;padding-top:24px;border-top:1px solid var(--rule)}
+  .booker .picked{font-family:var(--display);font-size:1.25rem;margin-bottom:4px}
+  .booker .picked small{display:block;font-family:var(--text);font-size:.98rem;color:var(--ink-soft);margin-top:2px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  input[type=date]{min-height:54px}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:rgba(255,255,255,.72);padding:64px 0 40px;font-size:1rem}
+  .foot-top{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.16)}
+  footer .brand{color:#fff}
+  footer .brand .name small{color:rgba(255,255,255,.6)}
+  footer .brand svg{color:#fff}
+  .foot-links{display:flex;gap:28px;flex-wrap:wrap}
+  footer a{color:rgba(255,255,255,.82);text-decoration:none}
+  footer a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
+  .foot-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:24px;font-size:.95rem;color:rgba(255,255,255,.55)}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:1024px){
+    .hero-grid,.split,.contact-grid,.about-grid{grid-template-columns:1fr;gap:56px}
+    .sticky{position:static}
+    .steps{grid-template-columns:1fr 1fr;gap:44px 40px}
+    .timeline::before{display:none}
+    .ex{grid-template-columns:1fr;gap:22px}
+    .ex-col{border-left:0;padding-left:0}
+    .ex-col.after{border-left:1px solid #C98F8F;padding-left:22px}
+    .price-table{grid-template-columns:1fr;gap:0}
+    .tier{border-right:0;border-bottom:1px solid var(--rule)}
+    .tier.lead{margin:0 -1px;padding-top:54px}
+    .tier:last-child{border-bottom:0}
+    .nav-links a:not(.btn){display:none}
+    .about-grid .plate{max-width:320px}
+    .hero-facts{grid-template-columns:1fr;gap:12px}
+  }
+  @media (max-width:640px){
+    body{font-size:18px}
+    section{padding:80px 0}
+    .hero{padding:64px 0 80px}
+    .wrap{width:min(1160px,calc(100% - 40px))}
+    .nav-inner{height:74px}
+    .brand .name{font-size:1.15rem;white-space:nowrap}
+    .brand .name small{display:none}
+    .brand svg{width:34px;height:34px}
+    .nav-links .btn .long{display:none}
+    .nav-links .btn .short{display:inline}
+    .nav-links .btn{padding:10px 16px;font-size:.95rem}
+    .steps{grid-template-columns:1fr}
+    .dl > div{grid-template-columns:44px 1fr;gap:16px}
+    .dl > div h3{grid-column:2}
+    .dl > div > div{grid-column:1 / -1}
+    .dl svg{width:36px;height:36px}
+    .ledger-wrap{padding:12px 0 0 12px}
+    .ledger-wrap::before{inset:0 12px 12px 0}
+    .ledger{padding:28px 22px 24px}
+    .ledger li{grid-template-columns:72px 1fr;gap:12px;font-size:.98rem}
+    .seal{width:60px;height:60px}
+    details .answer{padding-right:0}
+    summary{font-size:1.25rem}
+    .slots{grid-template-columns:repeat(3,1fr)}
+    .two{grid-template-columns:1fr}
+    .booker{padding:22px 18px}
+    .booker-row{grid-template-columns:1fr}
+    .foot-top{grid-template-columns:1fr}
+  }
 </style>
 </head>
+
 <body>
 
+<!-- Monogram seal, reused -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="seal" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="41" fill="none" stroke="currentColor" stroke-width=".8"/>
+      <circle cx="50" cy="50" r="24" fill="none" stroke="currentColor" stroke-width=".8"/>
+      <path id="arcTop" d="M16 50 a34 34 0 0 1 68 0" fill="none"/>
+      <path id="arcBot" d="M17 50 a33 33 0 0 0 66 0" fill="none"/>
+      <text font-family="'Source Serif 4', Georgia, serif" font-size="6.4" letter-spacing="1.1" fill="currentColor">
+        <textPath href="#arcTop" startOffset="50%" text-anchor="middle" textLength="92" lengthAdjust="spacing">CLARITY AUTOMATION</textPath>
+      </text>
+      <text font-family="'Source Serif 4', Georgia, serif" font-size="5.6" letter-spacing=".9" fill="currentColor">
+        <textPath href="#arcBot" startOffset="50%" text-anchor="middle" textLength="92" lengthAdjust="spacing">THE WOODLANDS, TEXAS</textPath>
+      </text>
+      <circle cx="14" cy="50" r="1.1" fill="currentColor"/><circle cx="86" cy="50" r="1.1" fill="currentColor"/>
+      <text x="50" y="57.5" text-anchor="middle" font-family="'Libre Caslon Display', Georgia, serif" font-size="22" fill="currentColor">CA</text>
+    </symbol>
+    <symbol id="mark" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <text x="20" y="25.5" text-anchor="middle" font-family="'Libre Caslon Display', Georgia, serif" font-size="15" fill="currentColor">CA</text>
+    </symbol>
+  </defs>
+</svg>
 
-<nav>
-  <div class="nav-inner">
-    <div class="logo">Clarity<span>.</span></div>
+<nav id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="Clarity Automation home">
+      <svg><use href="#mark"/></svg>
+      <span class="name">Clarity Automation<small>The Woodlands, Texas</small></span>
+    </a>
     <div class="nav-links">
-      <a href="#services">Services</a>
+      <a href="#services">What we handle</a>
       <a href="#how">How it works</a>
       <a href="#pricing">Pricing</a>
-      <a href="#cta" class="btn-nav">Free consultation</a>
+      <a href="#faq">Questions</a>
+      <a href="#contact" class="btn btn-solid"><span class="long">Book a free call</span><span class="short">Book a call</span></a>
     </div>
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-eyebrow">AI consulting for established businesses</div>
-  <h1>Run your business smarter —<br/><em>without the tech headaches.</em></h1>
-  <p class="hero-sub">We help business owners with 10+ years of experience save time, reduce manual work, and stay competitive using simple AI tools built around how you already work.</p>
-  <div class="hero-actions">
-    <a href="#cta" class="btn-primary">Book a free call</a>
-    <a href="#how" class="btn-ghost">See how it works</a>
-  </div>
-  <div class="hero-pills">
-    <span class="pill">No technical experience needed</span>
-    <span class="pill">Plain-English explanations</span>
-    <span class="pill">Based in Fayetteville, AR</span>
-    <span class="pill">Results in 2–4 weeks</span>
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-kicker rise d1">Automation for established businesses</div>
+      <h1 class="rise d2">The paperwork gets done. You didn't have to do it.</h1>
+      <p class="lede rise d3">We set up simple, dependable systems that answer inquiries, send reminders, and keep your records tidy while you run the business. Built around how you already work. Explained in plain English.</p>
+      <div class="hero-actions rise d4">
+        <a href="#contact" class="btn btn-solid">Book a free 30-minute call</a>
+        <a href="#how" class="btn btn-line">See how it works</a>
+      </div>
+      <div class="hero-facts rise d4">
+        <span><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5a7 7 0 1 0-14 0C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>Based in The Woodlands</span>
+        <span><svg viewBox="0 0 24 24"><path d="M4 12.5 9 17.5 20 6.5"/></svg>No technical experience needed</span>
+        <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Live in 2 to 4 weeks</span>
+      </div>
+    </div>
+
+    <div class="ledger-wrap">
+      <div class="ledger" aria-label="Example of work completed overnight by an automated system">
+        <div class="ledger-top">
+          <div>
+            <h3>Overnight, while you were closed</h3>
+            <div class="when">Tuesday 9:14 pm to Wednesday 7:00 am</div>
+          </div>
+          <svg class="seal" aria-hidden="true"><use href="#seal"/></svg>
+        </div>
+        <div class="rule"></div>
+        <ol>
+          <li><time>9:41 pm</time><span>New inquiry from the website answered, and a call offered for Thursday</span></li>
+          <li><time>10:02 pm</time><span>Two customers reminded about tomorrow's appointments</span></li>
+          <li><time>11:30 pm</time><span>Yesterday's invoice payment recorded and receipt emailed</span></li>
+          <li><time>6:00 am</time><span>New Google review from Mrs. Patterson thanked and filed</span></li>
+          <li><time>7:00 am</time><span>Your Wednesday summary delivered to your inbox</span></li>
+        </ol>
+        <div class="ledger-total">
+          <span>Hours of your time required</span>
+          <strong>None</strong>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<hr class="section-divider"/>
-
+<!-- ============ SERVICES ============ -->
 <section class="services" id="services">
-  <div class="services-header">
-    <div class="section-label">What we do</div>
-    <h2 class="section-title">Automation that fits your business,<br/>not the other way around.</h2>
-    <p class="section-sub">We identify the tasks eating your time — then build systems that handle them automatically. No subscriptions to manage. No learning curve. Just results.</p>
-  </div>
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="service-icon">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      </div>
-      <h3>Email & follow-ups</h3>
-      <p>Auto-respond to leads, send appointment reminders, and follow up with customers without lifting a finger.</p>
+  <div class="wrap split">
+    <div class="sticky">
+      <h2>The work we take off your plate</h2>
+      <p class="lede">Most owners we talk to lose two or three hours a day to the same small tasks. These are the ones we handle most often. If yours isn't here, ask.</p>
     </div>
-    <div class="service-card">
-      <div class="service-icon">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <div class="dl">
+      <div>
+        <svg viewBox="0 0 48 48"><rect x="6" y="12" width="36" height="26" rx="2"/><path d="M6 14l18 13 18-13"/><path d="M6 36l13-11M42 36L29 25"/></svg>
+        <h3>Answering inquiries</h3>
+        <div>
+          <p>Every new lead receives a prompt, courteous reply that answers their question and offers a time to talk. You see it when you're ready.</p>
+          <small><b>Replaces</b> checking email all day and typing the same responses.</small>
+        </div>
       </div>
-      <h3>Scheduling & booking</h3>
-      <p>Let customers book themselves. Sync calendars, send confirmations, and eliminate back-and-forth.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <div>
+        <svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="30" rx="2"/><path d="M7 19h34M16 6v8M32 6v8"/><path d="M15 29l5 5 9-10"/></svg>
+        <h3>Appointments and reminders</h3>
+        <div>
+          <p>Customers book themselves. They get a confirmation, a reminder the day before, and a thank-you afterward.</p>
+          <small><b>Replaces</b> phone tag and hand-typed reminder texts. Fewer no-shows.</small>
+        </div>
       </div>
-      <h3>Reports & data</h3>
-      <p>Get weekly summaries of your business automatically — sales, reviews, enquiries — delivered to your inbox.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">
-        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div>
+        <svg viewBox="0 0 48 48"><path d="M10 6h22l8 8v28H10z"/><path d="M32 6v8h8"/><path d="M16 22h16M16 28h16M16 34h10"/></svg>
+        <h3>Weekly business summary</h3>
+        <div>
+          <p>Every Monday, one email: leads, bookings, payments, and reviews from the past week, gathered for you.</p>
+          <small><b>Replaces</b> logging into five apps to piece together how things are going.</small>
+        </div>
       </div>
-      <h3>Customer service AI</h3>
-      <p>An AI assistant that answers common customer questions 24/7, so you can focus on the work that matters.</p>
+      <div>
+        <svg viewBox="0 0 48 48"><path d="M14 8h20a3 3 0 0 1 3 3v22a3 3 0 0 1-3 3H21l-8 6v-6h-2a3 3 0 0 1-3-3V11a3 3 0 0 1 3-3z" transform="translate(3 0)"/><path d="M19 17h14M19 23h14M19 29h8"/></svg>
+        <h3>Common customer questions</h3>
+        <div>
+          <p>Hours, pricing, service area, what to bring. Answered accurately at any hour, with anything unusual passed to you.</p>
+          <small><b>Replaces</b> the same ten phone calls every week.</small>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ============ HOW IT WORKS ============ -->
 <section class="how" id="how">
-  <div class="how-inner">
-    <div class="how-header">
-      <div class="section-label">How it works</div>
-      <h2 class="section-title">Simple from start to finish.</h2>
-      <p class="section-sub">We keep things straightforward. No jargon, no lengthy contracts, no surprises.</p>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>Free 30-minute discovery call</h3>
-        <p>We talk about your business, your biggest time drains, and where automation could help most. No pitch, no pressure.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>We map out a simple plan</h3>
-        <p>You receive a clear, plain-English proposal showing exactly what we'll build, what it'll cost, and what you can expect.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>We build it — you watch it work</h3>
-        <p>We set everything up, test it thoroughly, and walk you through how it works. Most projects are live within 2–4 weeks.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <h3>Ongoing support, if you want it</h3>
-        <p>We offer optional monthly check-ins to keep things running smoothly and add improvements over time.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="testimonials">
-  <div class="testi-header">
-    <div class="section-label">Real automation examples</div>
-    <h2 class="section-title">Here's what we can build for you.</h2>
-    <p class="section-sub" style="color:rgba(255,255,255,0.55);margin-top:12px;">These are real automations we set up for businesses just like yours — using tools that run quietly in the background, 24 hours a day.</p>
-  </div>
-  <div class="testi-grid">
-    <div class="testi-card">
-      <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#5DCAA5;margin-bottom:16px;">Customer inquiries</div>
-      <blockquote style="font-size:15px;line-height:1.75;opacity:0.9;margin-bottom:24px;">A new customer fills out your contact form. Within 60 seconds, they get a friendly, personalized reply — written by AI — that answers their question and invites them to book a call. You don't lift a finger.</blockquote>
-      <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;">
-        <div class="testi-name">What it replaces</div>
-        <div class="testi-author">Manually checking email and typing responses throughout the day</div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#5DCAA5;margin-bottom:16px;">Weekly business digest</div>
-      <blockquote style="font-size:15px;line-height:1.75;opacity:0.9;margin-bottom:24px;">Every Monday morning, a summary lands in your inbox: how many leads came in, how many appointments were booked, and any new customer reviews — all pulled together automatically so you always know where things stand.</blockquote>
-      <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;">
-        <div class="testi-name">What it replaces</div>
-        <div class="testi-author">Logging into multiple apps each week to piece together how the business is doing</div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#5DCAA5;margin-bottom:16px;">Appointment reminders</div>
-      <blockquote style="font-size:15px;line-height:1.75;opacity:0.9;margin-bottom:24px;">When a customer books an appointment, they automatically get a confirmation right away, a reminder the day before, and a thank-you message after. No-shows drop. Customers feel looked after. You did nothing.</blockquote>
-      <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;">
-        <div class="testi-name">What it replaces</div>
-        <div class="testi-author">Calling or texting customers by hand to remind them about upcoming appointments</div>
+  <div class="wrap">
+    <h2>Simple from the first call to the finished system</h2>
+    <p class="lede">No jargon, no long contracts, no surprises on the bill.</p>
+    <div class="timeline">
+      <div class="steps">
+        <div class="step" data-n="1">
+          <h3>A 30-minute conversation</h3>
+          <p>We talk about your business and where the hours go. No pitch. If we can't help, we'll say so.</p>
+          <span class="dur">Free, by phone or in person</span>
+        </div>
+        <div class="step" data-n="2">
+          <h3>A one-page plan</h3>
+          <p>You get a plain-English proposal: what we'll build, what it costs, and what changes for you day to day.</p>
+          <span class="dur">Within two business days</span>
+        </div>
+        <div class="step" data-n="3">
+          <h3>We build it and show you</h3>
+          <p>We set it up, test it against real situations, and walk you and your staff through it.</p>
+          <span class="dur">Two to four weeks</span>
+        </div>
+        <div class="step" data-n="4">
+          <h3>Support if you want it</h3>
+          <p>Optional monthly check-ins to keep things running and add improvements as your business changes.</p>
+          <span class="dur">Month to month, cancel anytime</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ============ EXAMPLES ============ -->
+<section class="examples">
+  <div class="wrap">
+    <h2>What actually changes</h2>
+    <p class="lede">Three systems we set up for businesses like yours. Each runs quietly in the background, every day.</p>
+    <div class="ex-list">
+      <div class="ex">
+        <h3>A new customer reaches out</h3>
+        <div class="ex-col"><span>Today</span><p>The form sits in your inbox until you get a break. By evening, they've called someone else.</p></div>
+        <div class="ex-col after"><span>With Clarity</span><p>Within a minute they receive a personal reply that answers their question and offers a time to talk.</p></div>
+      </div>
+      <div class="ex">
+        <h3>Monday morning</h3>
+        <div class="ex-col"><span>Today</span><p>You open your calendar, your payment app, your email, and your reviews page, and try to remember what happened last week.</p></div>
+        <div class="ex-col after"><span>With Clarity</span><p>One email is waiting: leads, appointments, payments, and reviews. Two minutes and you know where things stand.</p></div>
+      </div>
+      <div class="ex">
+        <h3>The day before an appointment</h3>
+        <div class="ex-col"><span>Today</span><p>You or your front desk call or text each customer by hand. Some don't get reached. Some don't show.</p></div>
+        <div class="ex-col after"><span>With Clarity</span><p>Every customer gets a confirmation when they book, a reminder the day before, and a thank-you afterward. Nobody had to remember.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
 <section class="pricing" id="pricing">
-  <div class="pricing-inner">
-    <div class="pricing-header">
-      <div class="section-label">Pricing</div>
-      <h2 class="section-title">One-time setup fees with optional ongoing support.</h2>
-    </div>
-    <p class="pricing-note">You own everything we build.</p>
-    <div class="pricing-grid">
-      <div class="price-card">
-        <div class="price-label">Starter</div>
-        <div class="price-amount">$497</div>
-        <div class="price-period">one-time</div>
-        <div class="price-desc">Perfect for tackling your single biggest time drain.</div>
-        <ul class="price-features">
+  <div class="wrap">
+    <h2>Straightforward pricing. You own what we build.</h2>
+    <p class="lede">One-time setup with optional ongoing support. No long-term contract required.</p>
+
+    <div class="price-table">
+      <div class="tier">
+        <div class="tier-name">Starter</div>
+        <div class="tier-price"><strong>$497</strong><span>one time</span></div>
+        <p class="tier-desc">For tackling your single biggest time drain.</p>
+        <ul>
           <li>Discovery call</li>
-          <li>1 custom automation</li>
-          <li>Full setup & testing</li>
-          <li>30-day support</li>
+          <li>One custom automation</li>
+          <li>Full setup and testing</li>
+          <li>30 days of support</li>
         </ul>
-        <a href="#cta" class="btn-price">Get started</a>
+        <a href="#contact" class="btn btn-line">Start with one</a>
       </div>
-      <div class="price-card featured">
-        <div class="price-badge">Most popular</div>
-        <div class="price-label">Business bundle</div>
-        <div class="price-amount">$1,297</div>
-        <div class="price-period">one-time</div>
-        <div class="price-desc">A full automation stack built around your workflow.</div>
-        <ul class="price-features">
-          <li>Deep-dive audit</li>
-          <li>3 custom automations</li>
-          <li>Full setup & testing</li>
-          <li>60-day support</li>
-          <li>Training walkthrough</li>
+
+      <div class="tier lead">
+        <span class="tag">Most owners choose this</span>
+        <div class="tier-name">Business bundle</div>
+        <div class="tier-price"><strong>$1,297</strong><span>one time</span></div>
+        <p class="tier-desc">A full set of systems built around how your business runs.</p>
+        <ul>
+          <li>In-depth review of where your time goes</li>
+          <li>Three custom automations</li>
+          <li>Full setup and testing</li>
+          <li>60 days of support</li>
+          <li>Training for you and your staff</li>
         </ul>
-        <a href="#cta" class="btn-price">Get started</a>
+        <a href="#contact" class="btn btn-solid">Talk about the bundle</a>
       </div>
-      <div class="price-card">
-        <div class="price-label">Retainer</div>
-        <div class="price-amount">$297</div>
-        <div class="price-period">/month</div>
-        <div class="price-desc">Ongoing improvements, monitoring, and priority support.</div>
-        <ul class="price-features">
+
+      <div class="tier">
+        <div class="tier-name">Ongoing support</div>
+        <div class="tier-price"><strong>$297</strong><span>per month</span></div>
+        <p class="tier-desc">Monitoring, adjustments, and priority help as your business changes.</p>
+        <ul>
           <li>Monthly check-in call</li>
-          <li>Updates & tweaks</li>
+          <li>Updates and adjustments</li>
           <li>Priority email support</li>
-          <li>New automation credits</li>
+          <li>Credit toward new automations</li>
         </ul>
-        <a href="#cta" class="btn-price">Get started</a>
+        <a href="#contact" class="btn btn-line">Ask about support</a>
       </div>
+    </div>
+    <p class="pricing-note">Not sure which fits? The first call is free, and we'll tell you plainly what we'd recommend.</p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <h2>Questions owners usually ask first</h2>
+    <p class="lede">Fair questions. Here are the plain answers.</p>
+    <div class="faq-list">
+      <details>
+        <summary>Will this replace my staff?<span class="plus"></span></summary>
+        <div class="answer"><p>No. It takes the repetitive parts off their plate so they can spend time with customers. The person answering the phone is still the person answering the phone. They just aren't typing the same reminder text forty times a week.</p></div>
+      </details>
+      <details>
+        <summary>Do I have to buy new software or learn a new system?<span class="plus"></span></summary>
+        <div class="answer"><p>Usually not. We connect the tools you already use, such as your email, calendar, and payment app. If something new is needed, it's typically one low-cost service, and we set it up and show you how it works.</p></div>
+      </details>
+      <details>
+        <summary>What happens if something breaks?<span class="plus"></span></summary>
+        <div class="answer"><p>Every project includes a support window, and we build in alerts so we usually know before you do. If you're on ongoing support, fixes are included. If you're not, you can call us and we'll sort it out at a fair hourly rate.</p></div>
+      </details>
+      <details>
+        <summary>Who owns what you build?<span class="plus"></span></summary>
+        <div class="answer"><p>You do. Everything runs under your accounts, and you receive a written summary of how it works. If you ever part ways with us, it keeps running and nothing is held hostage.</p></div>
+      </details>
+      <details>
+        <summary>Is my customer information safe?<span class="plus"></span></summary>
+        <div class="answer"><p>Your data stays in your own accounts. We don't copy customer lists to our systems, and we walk you through exactly what each automation can see and do before it goes live.</p></div>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     CTA — Contact Form + Calendly
-════════════════════════════════════════════ -->
-<section class="cta" id="cta">
-  <div class="cta-box">
-
-    <div class="cta-box-header">
-      <h2>Ready to get your time back?</h2>
-      <p>Send us a message or book a free 30-minute call directly — whichever works best for you.</p>
+<!-- ============ ABOUT ============ -->
+<section class="about">
+  <div class="wrap about-grid">
+    <div>
+      <h2>Local, and one person from start to finish</h2>
+      <p>Clarity Automation is run out of The Woodlands. You'll work with the same person from the first conversation to the finished system, and you can reach that person by phone.</p>
+      <p>We don't sell software subscriptions and we don't push tools you don't need. We look at where your hours go, build something dependable to handle it, and make sure you understand exactly how it works.</p>
+      <div class="sig">Bryce, Clarity Automation<small>The Woodlands, Texas</small></div>
     </div>
+    <figure class="plate">
+      <svg aria-hidden="true"><use href="#seal"/></svg>
+      <figcaption>Serving The Woodlands and Greater Houston</figcaption>
+    </figure>
+  </div>
+</section>
 
-    <div class="cta-columns-with-divider">
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Let's find out where your hours are going</h2>
+    <p class="lede">Send a note or pick a time on the calendar. Either way, you'll hear from a person within one business day.</p>
 
-      <!-- LEFT: Contact form (Formspree) -->
-      <div class="cta-form-side">
+    <div class="contact-grid">
+      <div>
         <h3>Send a message</h3>
-        <p class="form-sub">We'll reply within one business day.</p>
+        <p class="sub">Tell us a little about your business and what eats your time.</p>
 
-        <!--
-          ╔══════════════════════════════════════════╗
-          ║  SETUP: Replace YOUR_FORM_ID below       ║
-          ║  1. Sign up at formspree.io              ║
-          ║  2. Create a new form                    ║
-          ║  3. Paste your form ID in the action URL ║
-          ╚══════════════════════════════════════════╝
-        -->
-        <!-- Formspree success message (shown by SDK after submit) -->
-        <div data-fs-success>✓&nbsp; Got it — we'll be in touch within one business day.</div>
+        <div class="msg msg-ok" id="c-ok">Got it. Check your inbox in a minute for a note from us, and we'll follow up personally within one business day.</div>
+        <div class="msg msg-err" id="c-err">Something went wrong sending that. Please email <a href="mailto:hello@clarityautomation.com">hello@clarityautomation.com</a> and we'll take it from there.</div>
 
-        <!-- Formspree form-level error banner -->
-        <div class="fs-form-error" data-fs-error></div>
-
-        <form class="contact-form" id="contact-form">
-          <input
-            type="text"
-            name="name"
-            placeholder="Your name"
-            data-fs-field
-            required
-          />
-          <span data-fs-error="name"></span>
-
-          <input
-            type="email"
-            name="email"
-            placeholder="Your email address"
-            data-fs-field
-            required
-          />
-          <span data-fs-error="email"></span>
-
-          <input
-            type="text"
-            name="business"
-            placeholder="Your business (optional)"
-          />
-
-          <textarea
-            name="message"
-            placeholder="What are you hoping to automate?"
-            data-fs-field
-            required
-          ></textarea>
-          <span data-fs-error="message"></span>
-
-          <button type="submit" data-fs-submit-btn>Send message →</button>
-          <p class="form-note">No commitment. No tech knowledge required.</p>
+        <form class="contact-form" id="contact-form" novalidate>
+          <div>
+            <label for="f-name">Your name</label>
+            <input id="f-name" type="text" name="name" required autocomplete="name" />
+          </div>
+          <div>
+            <label for="f-email">Email address</label>
+            <input id="f-email" type="email" name="email" required autocomplete="email" />
+          </div>
+          <div>
+            <label for="f-business">Your business <span>(optional)</span></label>
+            <input id="f-business" type="text" name="business" autocomplete="organization" />
+          </div>
+          <div>
+            <label for="f-message">What would you like to stop doing by hand?</label>
+            <textarea id="f-message" name="message" required></textarea>
+          </div>
+          <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button type="submit" class="btn btn-solid">Send message</button>
+          <p class="form-note">No commitment. We reply personally.</p>
         </form>
       </div>
 
-      <!-- DIVIDER -->
-      <div class="cta-divider">
-        <div class="cta-divider-line"></div>
-        <div class="cta-divider-text">or</div>
-        <div class="cta-divider-line"></div>
-      </div>
+      <div>
+        <h3>Or book a free 30-minute call</h3>
+        <p class="sub">Pick a day, then a time. We'll call you.</p>
 
-      <!-- RIGHT: Calendly embed -->
-      <div class="cta-calendly-side">
-        <h3>Book a free call</h3>
-        <p class="form-sub">Pick a time that works for you — 30 minutes, no pressure.</p>
+        <div class="booker" id="booker">
+          <div class="booker-row">
+            <div>
+              <label for="b-date">Choose a day</label>
+              <input id="b-date" type="date" />
+            </div>
+            <div class="tz">Times shown in Central</div>
+          </div>
+          <p class="slots-note" id="slots-note">Weekdays and Saturday mornings are available.</p>
+          <div class="slots" id="slots" hidden></div>
 
-        <!--
-          ╔══════════════════════════════════════════╗
-          ║  SETUP: Replace YOUR_USERNAME below      ║
-          ║  1. Sign up at calendly.com              ║
-          ║  2. Create a "30 min" event type         ║
-          ║  3. Replace YOUR_USERNAME with your      ║
-          ║     Calendly username                    ║
-          ╚══════════════════════════════════════════╝
-        -->
-        <div class="calendly-wrapper">
-          <div
-            class="calendly-inline-widget"
-            data-url="https://calendly.com/jacksonschardein/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=1a1a18&text_color=ffffff&primary_color=1D6B4E"
-          ></div>
+          <form id="book-form" hidden novalidate>
+            <div class="picked" id="picked"></div>
+            <div class="two">
+              <div>
+                <label for="b-name">Your name</label>
+                <input id="b-name" type="text" name="name" required autocomplete="name" />
+              </div>
+              <div>
+                <label for="b-phone">Phone to call</label>
+                <input id="b-phone" type="tel" name="phone" required autocomplete="tel" />
+              </div>
+            </div>
+            <div>
+              <label for="b-email">Email for the confirmation</label>
+              <input id="b-email" type="email" name="email" required autocomplete="email" />
+            </div>
+            <div>
+              <label for="b-business">Your business <span>(optional)</span></label>
+              <input id="b-business" type="text" name="business" autocomplete="organization" />
+            </div>
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <button type="submit" class="btn btn-solid">Book this time</button>
+          </form>
+          <div class="msg msg-ok" id="b-ok"></div>
+          <div class="msg msg-err" id="b-err">That time couldn't be booked. Pick another, or email <a href="mailto:hello@clarityautomation.com">hello@clarityautomation.com</a>.</div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-inner">
-    <div class="footer-logo">Clarity<span>.</span></div>
-    <div class="footer-info">Fayetteville, AR &nbsp;·&nbsp; hello@clarityautomation.com</div>
-    <div class="footer-copy">© 2025 Clarity Automation</div>
+  <div class="wrap">
+    <div class="foot-top">
+      <a href="#top" class="brand">
+        <svg><use href="#mark"/></svg>
+        <span class="name">Clarity Automation<small>Automation for established businesses</small></span>
+      </a>
+      <div class="foot-links">
+        <a href="#services">What we handle</a>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">Questions</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>The Woodlands, Texas</span>
+      <a href="mailto:hello@clarityautomation.com">hello@clarityautomation.com</a>
+      <span>&copy; 2026 Clarity Automation</span>
+    </div>
   </div>
 </footer>
 
 <script>
-  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-  formspree('initForm', { formElement: '#contact-form', formId: 'mojrodrz' });
+  // Nav gains a rule and shadow once the page is scrolled
+  (function(){
+    var nav=document.getElementById('nav');
+    function onScroll(){ nav.classList.toggle('scrolled', window.scrollY>8); }
+    onScroll(); addEventListener('scroll', onScroll, {passive:true});
+  })();
 </script>
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+<script>
+  // ---- Your n8n Cloud address. Change this one line if it ever moves. ----
+  var N8N = 'https://jacksonschardein.app.n8n.cloud/webhook';
+  var TZ  = 'America/Chicago';
+
+  function show(id, on, text){ var el=document.getElementById(id); if(text!==undefined) el.textContent=text; el.classList.toggle('show', !!on); }
+  function post(url, data){
+    return fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)})
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); });
+  }
+  function fields(form){ var o={}; new FormData(form).forEach(function(v,k){ o[k]=String(v).trim(); }); return o; }
+  function valid(form){ if(form.checkValidity()) return true; form.reportValidity(); return false; }
+
+  // ---- Contact form ----
+  (function(){
+    var f=document.getElementById('contact-form'), btn=f.querySelector('button');
+    f.addEventListener('submit', function(e){
+      e.preventDefault(); if(!valid(f)) return;
+      btn.disabled=true; show('c-err',false);
+      post(N8N+'/clarity-contact', fields(f)).then(function(){ f.hidden=true; show('c-ok',true); })
+        .catch(function(){ show('c-err',true); btn.disabled=false; });
+    });
+  })();
+
+  // ---- Booking ----
+  (function(){
+    var dateEl=document.getElementById('b-date'), slotsEl=document.getElementById('slots'), note=document.getElementById('slots-note');
+    var form=document.getElementById('book-form'), picked=document.getElementById('picked'), btn=form.querySelector('button');
+    var chosen=null;
+
+    // Allow today through 30 days out
+    var today=new Date(), max=new Date(); max.setDate(max.getDate()+30);
+    var iso=function(d){ return d.toISOString().slice(0,10); };
+    dateEl.min=iso(today); dateEl.max=iso(max);
+
+    var fmtDay=new Intl.DateTimeFormat('en-US',{weekday:'long',month:'long',day:'numeric',timeZone:TZ});
+    var fmtTime=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:TZ});
+
+    dateEl.addEventListener('change', function(){
+      chosen=null; form.hidden=true; show('b-ok',false); show('b-err',false);
+      slotsEl.hidden=true; slotsEl.innerHTML='';
+      if(!dateEl.value) return;
+      note.textContent='Checking the calendar…';
+      fetch(N8N+'/clarity-availability?date='+encodeURIComponent(dateEl.value))
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          var slots=(d&&d.slots)||[];
+          if(!slots.length){ note.textContent='Nothing open that day. Try another.'; return; }
+          note.textContent='Choose a time:';
+          slots.forEach(function(s){
+            var b=document.createElement('button'); b.type='button'; b.className='slot'; b.textContent=s.label;
+            b.addEventListener('click', function(){
+              chosen=s; slotsEl.querySelectorAll('.slot').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
+              var st=new Date(s.start);
+              picked.innerHTML=fmtDay.format(st)+' at '+fmtTime.format(st)+'<small>30-minute phone call, Central time</small>';
+              form.hidden=false; document.getElementById('b-name').focus();
+            });
+            slotsEl.appendChild(b);
+          });
+          slotsEl.hidden=false;
+        })
+        .catch(function(){ note.textContent="Couldn't reach the calendar. Please email hello@clarityautomation.com."; });
+    });
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault(); if(!chosen||!valid(form)) return;
+      btn.disabled=true; show('b-err',false);
+      var data=fields(form); data.start=chosen.start; data.end=chosen.end;
+      post(N8N+'/clarity-book', data).then(function(){
+        form.hidden=true; slotsEl.hidden=true; note.textContent='';
+        var st=new Date(chosen.start);
+        show('b-ok',true,"You're booked for "+fmtDay.format(st)+' at '+fmtTime.format(st)+' Central. A confirmation is on its way to your inbox.');
+      }).catch(function(){ show('b-err',true); btn.disabled=false; });
+    });
+  })();
+</script>
 
 </body>
 </html>
